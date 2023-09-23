@@ -188,3 +188,36 @@ for i in np.arange(0.01,1.1,0.1):
   print("the best accuracy is {}% with alpha value as {}".format(round(best_accuracy*100,2), round(alpha_val,1)))
 
 
+Case 2 - 
+
+#case2
+token = RegexpTokenizer(r'[a-zA-Z0-9]+')
+cv = CountVectorizer(lowercase=True,
+                     stop_words='english',
+                     ngram_range = (1,1),
+                     tokenizer = token.tokenize)
+text_counts= cv.fit_transform(df['Review'])
+print(text_counts.shape)
+
+#case 2
+count_df = pd.DataFrame(text_counts.toarray(),columns=cv.get_feature_names_out())
+count_df.head()
+
+#case 2
+count_df = pd.DataFrame(text_counts.toarray(),columns=cv.get_feature_names_out())
+
+# case 2
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(text_counts,
+                                                    df['Liked'],
+                                                    test_size=0.3,
+                                                    random_state=1)
+
+#case 2
+from sklearn.naive_bayes import MultinomialNB
+from sklearn import metrics
+clf = MultinomialNB().fit(X_train, y_train)
+
+predicted= clf.predict(X_test)
+z = predicted
+print("MultinomialNB Accuracy:",metrics.accuracy_score(y_test, z))
